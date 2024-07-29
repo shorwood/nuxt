@@ -1,0 +1,90 @@
+{
+  "name": "@shorwood/nuxt",
+  "type": "module",
+  "version": "0.0.1",
+  "author": "Stanley Horwood <stanley@hsjm.io>",
+  "homepage": "https://github.com/shorwood/unshared#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/shorwood/unshared.git"
+  },
+  "files": [
+    "components",
+    "composables",
+    "layouts",
+    "middleware",
+    "pages",
+    "server",
+    "utils",
+    "app.vue",
+    "nuxt.config.ts",
+    "tsconfig.json",
+    "unocss.config.ts",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowAny": [
+        "eslint",
+        "typescript",
+        "meow"
+      ]
+    },
+    "overrides": {
+      "@unserved/server": "link:../unserved/packages/server"
+    }
+  },
+  "scripts": {
+    "dev": "nuxt dev"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "0.4.0",
+    "@nuxt/fonts": "0.7.1",
+    "@nuxt/image": "1.7.0",
+    "@nuxt/kit": "3.12.4",
+    "@types/ini": "4.1.1",
+    "@unocss/nuxt": "0.61.6",
+    "@unocss/preset-icons": "0.61.6",
+    "@unocss/preset-mini": "0.61.6",
+    "@unocss/preset-web-fonts": "0.61.6",
+    "@unocss/reset": "0.61.6",
+    "@unserved/client": "0.0.1",
+    "@unserved/module-content": "0.0.1",
+    "@unserved/module-health": "0.0.1",
+    "@unserved/module-icon": "0.0.1",
+    "@unserved/module-storage-local": "0.0.1",
+    "@unserved/module-user": "0.0.1",
+    "@unserved/server": "0.0.1",
+    "@unshared/binary": "0.0.15",
+    "@unshared/collection": "0.0.15",
+    "@unshared/color": "0.0.15",
+    "@unshared/decorators": "0.0.15",
+    "@unshared/eslint-config": "0.0.15",
+    "@unshared/fs": "0.0.15",
+    "@unshared/functions": "0.0.15",
+    "@unshared/process": "0.0.15",
+    "@unshared/string": "0.0.15",
+    "@unshared/types": "0.0.15",
+    "@unshared/unocss-preset": "0.0.15",
+    "@unshared/validation": "0.0.15",
+    "@unshared/vue": "0.0.15",
+    "@vueuse/core": "10.11.0",
+    "@vueuse/nuxt": "10.11.0",
+    "date-fns": "3.6.0",
+    "eslint": "9.8.0",
+    "h3": "1.12.0",
+    "nuxt": "3.12.4",
+    "nuxt-security": "2.0.0-rc.9",
+    "pg": "8.12.0",
+    "sqlite3": "5.1.7",
+    "typeorm": "0.3.20",
+    "unocss": "0.61.6",
+    "vue": "3.4.34",
+    "vue-router": "4.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}
