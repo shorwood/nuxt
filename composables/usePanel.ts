@@ -3,6 +3,27 @@ export interface PanelItem {
   component: Component
 }
 
+/**
+ * The `usePanel` composable provides a way to manage dynamic panels in the application
+ * with a stack of items. It allows you to open and close panels with a given ID or
+ * panel item. Each panel item is associated with a component to render in the panel.
+ *
+ * @example
+ * // Import the component that will be rendered in the panel.
+ * import SettingsPanel from '~/components/panels/SettingsPanel.vue'
+ *
+ * // Get the panel composable.
+ * const panel = usePanel()
+ *
+ * // Open a panel with the given ID
+ * panel.open({ id: 'settings' }, SettingsPanel)
+ *
+ * // List all panel items
+ * panel.items // [{ value: { id: 'settings' }, component: SettingsPanel }]
+ *
+ * // Get the currently selected panel item
+ * panel.selected // { value: { id: 'settings' }, component: SettingsPanel }
+ */
 export const usePanel = createSharedComposable(() => {
   const isOpen = ref(false)
   const items = reactive<PanelItem[]>([])

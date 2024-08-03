@@ -1,57 +1,89 @@
 <script setup lang="ts">
-defineProps<{
+import type { SectionProps } from '~/utils/types'
+
+const props = defineProps<{
   name: string
   imageUrl?: string
-}>()
+  size?: 'large' | 'medium' | 'small'
+
+  // --- Menu.
+  items?: NavItem[]
+  itemsStart?: NavItem[]
+  itemsCenter?: NavItem[]
+  itemsEnd?: NavItem[]
+} & SectionProps>()
+
+const classes = computed(() => {
+  const { size = 'medium' } = props
+  return {
+    'bg-white dark:bg-dark-900': true,
+    'grid grid-cols-3 items-center': true,
+    'space-x-12 relative p-0': true,
+    'h-12 md:h-16': size === 'small',
+    'h-16 md:h-20': size === 'medium',
+    'h-24 md:h-32': size === 'large',
+  }
+})
+
+const classesIcon = computed(() => {
+  const { size = 'medium' } = props
+  return {
+    'w-10 h-10 md:w-10 md:h-10': size === 'small',
+    'w-16 h-16 md:w-12 md:h-12': size === 'medium',
+    'w-24 h-24 md:w-20 md:h-20': size === 'large',
+  }
+})
 </script>
 
 <template>
-  <NuxtClientFallback>
-    <div
-      class="
-      grid grid-cols-3 items-center
-      space-x-12 relative py-2 px-6
-      bg-primary-50 border-primary-500
-      dark:bg-primary-900 dark:border-primary-600
-    ">
+  <WebsiteSection
+    :contained
+    :padded
+    :variant
+    :class="classes">
 
-      <!-- Title -->
-      <div class="flex items-center space-x-12">
-        <NuxtLink
-          :to="{ name: 'WebsiteHome' }"
-          class="cursor-pointer hover:opacity-80 transition-opacity text-primary-600">
+    <!-- Title -->
+    <div class="flex items-center h-full space-x-8">
+      <NuxtLink
+        v-if="name || imageUrl"
+        :to="{ name: 'WebsiteHome' }"
+        class="cursor-pointer hover:opacity-80 transition-opacity text-primary-600">
 
-          <!-- If image, display image -->
-          <img
-            v-if="imageUrl"
-            :src="imageUrl"
-            alt="Logo"
-            class="w-16 h-16 md:w-20 md:h-20"
-          />
+        <!-- If image, display image -->
+        <div
+          v-if="imageUrl"
+          :style="{ backgroundImage: `url(${imageUrl})` }"
+          :class="classesIcon"
+          class="bg-contain bg-center bg-no-repeat"
+          alt="Logo"
+        />
 
-          <!-- If no image, display name -->
-          <p
-            v-else
-            class="text-5xl md:text-2xl font-bold"
-            v-text="name"
-          />
-        </NuxtLink>
+        <!-- If no image, display name -->
+        <p
+          v-else
+          class="text-5xl md:text-2xl font-bold"
+          v-text="name"
+        />
+      </NuxtLink>
 
-        <!-- Menu - Left -->
-        <div v-if="$slots.left" class="flex items-center justify-start space-x-12">
-          <slot name="left"/>
-        </div>
-      </div>
-
-      <!-- Menu - center -->
-      <div v-if="$slots.center" class="flex items-center justify-center space-x-12">
-        <slot name="center"/>
-      </div>
-
-      <!-- Menu - Right -->
-      <div v-if="$slots.right" class="flex items-center justify-end space-x-12">
-        <slot name="right"/>
+      <!-- Menu - Left -->
+      <div v-if="$slots.start || itemsStart" class="flex items-center justify-start">
+        <slot name="start"/>
+        <WebsiteNavItem v-for="(item, index) in itemsStart" :key="index" v-bind="item" :size />
       </div>
     </div>
-  </NuxtClientFallback>
+
+    <!-- Menu - center -->
+    <div v-if="$slots.center || itemsCenter" class="flex items-center justify-center col-start-2">
+      <slot name="center"/>
+      <WebsiteNavItem v-for="(item, index) in itemsCenter" :key="index" v-bind="item" :size />
+    </div>
+
+    <!-- Menu - Right -->
+    <div v-if="$slots.end || itemsEnd" class="flex items-center justify-end col-start-3">
+      <WebsiteNavItem v-for="(item, index) in itemsEnd" :key="index" v-bind="item" :size />
+      <slot name="end"/>
+    </div>
+
+  </WebsiteSection>
 </template>

@@ -1,21 +1,18 @@
 <script setup lang="ts">
+import type { NavItem } from '~/utils/types'
 import { NuxtLink } from '#components'
 
-defineProps<{
-  to?: string
-  icon?: string
-  label?: string
-}>()
+const props = defineProps<NavItem>()
 
 // --- Initialize composables.
 const slots = useSlots()
 const route = useRoute()
 
 // --- Initialize refs.
-const menuOpen = ref(false)
+const menuOpen = ref(true)
 const menu = ref<HTMLDivElement>()
 const button = ref<HTMLDivElement>()
-const hasMenu = computed(() => !!slots.default)
+const hasMenu = computed(() => !!slots.default || !!props.links || !!props.groups)
 
 // --- Declare toggle method.
 function toggleMenu(value?: boolean) {
@@ -23,22 +20,42 @@ function toggleMenu(value?: boolean) {
   menuOpen.value = value ?? !menuOpen.value
 }
 
+const classesButton = computed(() => {
+  const { size = 'medium' } = props
+  return {
+    'h-12 md:h-16': size === 'small',
+    'h-16 md:h-20': size === 'medium',
+    'h-24 md:h-32': size === 'large',
+  }
+})
+
+const classesPanel = computed(() => {
+  const { align = 'center' } = props
+  return {
+    'justify-start': align === 'left',
+    'justify-center': align === 'center',
+    'justify-end': align === 'right',
+  }
+})
+
 // --- Register closing triggers
 watch(() => route, () => toggleMenu(false))
 onClickOutside(menu, () => toggleMenu(false), { ignore: [button] })
 </script>
 
 <template>
-  <BaseButton
-    :to="to"
-    :as="to ? NuxtLink : 'div'"
-    :label="label"
-    class="group"
+  <div
+    class="relative px-4 first:pl-0 last:pr-0 group"
     @mouseenter="() => toggleMenu(true)"
     @mouseleave="() => toggleMenu(false)">
 
     <!-- Navigation item button -->
-    <div ref="button" class="inline-flex items-center text-lg font-bold py-5 relative cursor-pointer z-10">
+    <BaseButton
+      :to="to"
+      :as="to ? NuxtLink : 'div'"
+      ref="button"
+      class="inline-flex items-center cursor-pointer z-10 text-black group-hover:text-primary-600 "
+      :class="classesButton">
 
       <!-- Icon -->
       <BaseIcon
@@ -48,37 +65,27 @@ onClickOutside(menu, () => toggleMenu(false), { ignore: [button] })
       />
 
       <!-- Text -->
-      <span>{{ label }}</span>
+      <span
+        class="whitespace-pre text-lg font-normal"
+        v-text="label"
+      />
 
       <!-- Icon -->
       <BaseIcon
         v-if="hasMenu"
         icon="i-carbon:chevron-down"
-        class="ml-2 transition-transform duration-100"
+        class="ml-2 "
         :class="menuOpen ? 'rotate-180' : undefined"
       />
-    </div>
+    </BaseButton>
 
-    <!-- Navigation item menu -->
-    <Transition
-      leave-to-class="opacity-0 scale-90 -translate-y-10 pointer-events-none"
-      enter-from-class="opacity-0 scale-90 -translate-y-10"
-      enter-active-class="transition-all duration-200"
-      leave-active-class="transition-all duration-200">
-      <div
-        v-show="menuOpen && hasMenu"
-        class="pt-28 absolute !m-0 right-0 top-0 cursor-unset transform">
-        <!-- Content -->
-        <div
-          ref="menu"
-          class="
-            overflow-hidden rounded-xl shadow-2xl shadow-gray-500/50
-            bg-primary-50 text-black border border-light-500
-            text-left text-base font-normal pointer-events-auto
-          ">
-          <slot />
-        </div>
+    <!-- Menu Panel -->
+    <div ref="menu" v-if="hasMenu" v-show="menuOpen" class="absolute -left-8 top-100% pointer-events-none" :class="classesPanel">
+      <div class="w-full max-w-7xl mx-auto pointer-events-auto cursor-unset">
+        <slot>
+          <WebsiteNavPanel v-bind="$props"/>
+        </slot>
       </div>
-    </Transition>
-  </BaseButton>
+    </div>
+  </div>
 </template>

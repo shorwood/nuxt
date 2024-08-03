@@ -26,35 +26,23 @@ function getSocialIcon(type: string) {
 </script>
 
 <template>
-  <footer
+  <WebsiteSection
+    as="footer"
+    contained
+    padded
+    dark
+    gradient
+    variant="primary"
     class="
       relative text-white pt-12 md:pt-24 pb-100
-      bg-gradient-to-b from-primary-600 via-primary-600 to-primary-500
     ">
 
     <!-- Content -->
-    <WebsiteContainer as="nav" class="grid grid-cols-4 gap-8 mx-auto items-start justify-center">
+    <nav as="nav" class="grid grid-cols-4 gap-8 mx-auto items-start justify-center">
       <div class="col-span-full md:col-span-2 text-center md:text-left">
         <h3 class="text-3xl font-bold" v-text="'Téléphone, mail, lettre...'" />
         <p class="text-xl" v-text="'Nous sommes à votre écoute'" />
       </div>
-
-      <!-- CTAs -->
-      <WebsiteContactLink
-        v-if="website.contactAddress"
-        label="Par téléphone:"
-        icon="i-carbon:phone"
-        :to="`tel:${website.contactPhone?.replace(/\s/g, '')}`"
-        :text="website.contactPhone"
-      />
-
-      <WebsiteContactLink
-        v-if="website.contactEmail"
-        label="Par email:"
-        icon="i-carbon:email"
-        :to="`mailto:${website.contactEmail}`"
-        :text="website.contactEmail"
-      />
 
       <!-- Separator -->
       <hr class="text-primary-50 opacity-50 col-span-full md:hidden">
@@ -91,12 +79,12 @@ function getSocialIcon(type: string) {
           />
         </div>
       </ul>
-    </WebsiteContainer>
+    </nav>
 
     <!-- Bottom image. -->
     <div
       class="absolute bottom-0 z-10 w-full h-100 bg-bottom bg-repeat-x"
       :style="{ backgroundImage: 'url(/img/bg-footer.svg)' }"
     />
-  </footer>
+  </WebsiteSection>
 </template>

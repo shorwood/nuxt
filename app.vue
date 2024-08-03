@@ -38,7 +38,7 @@ useSeoMeta({
 
 <template>
   <Suspense>
-    <div id="app" class="font-sans">
+    <div id="app" class="font-sans antialiased">
       <!-- <AppAlerts /> -->
       <NuxtLoadingIndicator />
       <NuxtLayout>

@@ -51,6 +51,11 @@ export default defineNuxtConfig({
     headers: {
       crossOriginEmbedderPolicy: false,
       contentSecurityPolicy: {
+        'img-src': [
+          '\'self\'',
+          'data:',
+          'https://*',
+        ],
         'script-src': [
           '\'nonce-{{nonce}}\'',
           '\'strict-dynamic\'',
